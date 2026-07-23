@@ -33,7 +33,7 @@ const Resultados = () => {
         <section className="w-full h-[90%] grid grid-rows-9">
           {datos.map((el)=>{
               return <div className="w-full border border-gray-200 px-6 flex items-center">
-                Pais: {el?.pais} - Ciudad: {el.ciudad}
+                Pais: {el?.pais} -------------- Ciudad: {el.ciudad}
               </div>
           })}
          
