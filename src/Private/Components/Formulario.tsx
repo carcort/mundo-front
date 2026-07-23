@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getData } from "../../Fetch/getData";
+import { postData } from "../../Fetch/postData";
 
 const Formulario = () => {
 
  const [pais, setPais] = useState('')
  const [ciudad, setCiudad] = useState('')
+
+ const [datos, setDatos] = useState([])
 
   const handleChangeInputForm =(e)=>{
      if(e.target.name === 'pais'){
@@ -18,13 +22,33 @@ const Formulario = () => {
      }
   }
 
+  
+  
 
-  const handleSubmitForm =(e)=>{
+
+  const handleSubmitForm = async(e)=>{
       e.preventDefault()
       console.log(pais, ciudad);
+      const data = {pais, ciudad}
+      
+      await postData({data})
+      alert('guardado')
       
   }
 
+
+  const traerData = async()=>{
+      const res = await getData()
+      setDatos(res)
+  }
+  useEffect(()=>{
+      traerData()
+  }, [])
+
+  console.log(datos);
+
+
+  
   return (
     <form onSubmit={handleSubmitForm} className="w-[50%] h-[70%] bg-white" >
       <header className="w-full h-[15%] grid place-items-center">

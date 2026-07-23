@@ -1,20 +1,42 @@
-import { useNavigate } from "react-router";
+import { data, useNavigate } from "react-router";
+import { getData } from "../../Fetch/getData";
+import { useEffect, useState } from "react";
 
 const Resultados = () => {
+
+  const [datos, setDatos] = useState([])
 
  const navegar = useNavigate()
 
  const handleClickVolver =()=>{
    navegar('/private')
  }
+
+
+
+
+ const traerData = async()=>{
+       const res = await getData()
+       setDatos(res)
+   }
+   useEffect(()=>{
+       traerData()
+   }, [])
+ 
+   //console.log(datos);
   return (
     <div className="w-full h-full">
       <header className="w-full h-[10%] grid place-items-center">
        Resultados
       </header>
       <main className="w-full h-[90%]">
-        <section className="w-full h-[90%]">
-         lista
+        <section className="w-full h-[90%] grid grid-rows-9">
+          {datos.map((el)=>{
+              return <div className="w-full border border-gray-200 px-6 flex items-center">
+                Pais: {el?.pais} - Ciudad: {el.ciudad}
+              </div>
+          })}
+         
         </section>
         <div className="w-full h-[10%] flex justify-end items-center">
           <button onClick={handleClickVolver} className="bg-blue-600 hover:bg-blue-700 w-[15%] h-[50%] text-white font-semibold cursor-pointer">

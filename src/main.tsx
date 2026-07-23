@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import Public from './Public/Public.tsx';
 import Private from './Private/Private.tsx';
 
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
