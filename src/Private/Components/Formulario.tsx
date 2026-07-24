@@ -4,6 +4,14 @@ import { postData } from "../../Fetch/postData";
 
 const Formulario = () => {
 
+  // CAAA CAMBIO SI ES ID O ACCESS
+  const token = localStorage.getItem('access_token')
+
+
+
+
+
+
  const [pais, setPais] = useState('')
  const [ciudad, setCiudad] = useState('')
 
@@ -24,21 +32,25 @@ const Formulario = () => {
 
   
   
+console.log('token:', token);
 
 
   const handleSubmitForm = async(e)=>{
       e.preventDefault()
       console.log(pais, ciudad);
-      const data = {pais, ciudad}
-      
-      await postData({data})
+      const nombre = 'carviii'
+      const apellido = 'cortes'
+      const cargo = 'Administrador_Rrhh' 
+      const data = {pais, ciudad, nombre, apellido, cargo}
+      const ruta1 = ''
+      await postData({data, token, ruta1})
       alert('guardado')
       
   }
 
 
   const traerData = async()=>{
-      const res = await getData()
+      const res = await getData({token})
       setDatos(res)
   }
   useEffect(()=>{

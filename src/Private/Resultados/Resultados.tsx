@@ -1,9 +1,15 @@
-import { data, useNavigate } from "react-router";
+import {  useNavigate } from "react-router";
 import { getData } from "../../Fetch/getData";
 import { useEffect, useState } from "react";
+// import { getData } from "../../Fetch/getData";
+// import { useEffect, useState } from "react";
 
 const Resultados = () => {
 
+  // const token = localStorage.getItem('token')
+  const token = localStorage.getItem('access_token')
+
+  // const [datos, setDatos] = useState([])
   const [datos, setDatos] = useState([])
 
  const navegar = useNavigate()
@@ -15,13 +21,26 @@ const Resultados = () => {
 
 
 
- const traerData = async()=>{
-       const res = await getData()
-       setDatos(res)
-   }
-   useEffect(()=>{
-       traerData()
-   }, [])
+//  const traerData = async()=>{
+//        const res = await getData({token})
+//        setDatos(res)
+//    }
+//    useEffect(()=>{
+//        traerData()
+//    }, [])
+   
+
+
+    const traerData = async()=>{
+      const ruta1 = ''
+          const res = await getData({token, ruta1})
+          setDatos(res)
+      }
+      useEffect(()=>{
+          traerData()
+      }, [])
+    
+      console.log(datos);
  
    //console.log(datos);
   return (
@@ -30,10 +49,11 @@ const Resultados = () => {
        Resultados
       </header>
       <main className="w-full h-[90%]">
+        
         <section className="w-full h-[90%] grid grid-rows-9">
           {datos.map((el)=>{
               return <div className="w-full border border-gray-200 px-6 flex items-center">
-                Pais: {el?.pais} -------------- Ciudad: {el.ciudad}
+                Nombre: {el?.nombre} {el.apellido} - Cargo: {el.cargo}
               </div>
           })}
          
