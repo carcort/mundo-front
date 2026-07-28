@@ -1,12 +1,8 @@
 import NavbarPrivate from "../Components/NavbarPrivate"
 import { useAuth } from "react-oidc-context";
-
-
 import { Routes, Route } from "react-router";
-import PageFormulario from "./PageFormulario/PageFormulario";
-import Resultados from "./Resultados/Resultados";
 import Tienda from "./Tienda/Tienda";
-
+import Home from "./Home/Home";
 
 const Private = () => {
   const auth = useAuth();
@@ -18,12 +14,9 @@ const Private = () => {
     window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
   };
 
-
   // guardar el token en localstorage
   localStorage.setItem("access_token", auth?.user?.access_token);
   localStorage.setItem("id_token", auth?.user?.id_token);
-
-
 
 
   if (auth.isLoading) {
@@ -46,8 +39,8 @@ const Private = () => {
           </header>
           <main className="w-full h-[95%] grid place-items-center bg-gray-100">
             <Routes>
-             <Route path="/" element={<PageFormulario auth={auth} />}/>
-             <Route path="/resultados" element={<Resultados />}/>
+            
+             <Route path="/" element={<Home auth={auth} />}/>
              <Route path="/tienda" element={<Tienda auth={auth} />}/>
             </Routes>
           </main>
