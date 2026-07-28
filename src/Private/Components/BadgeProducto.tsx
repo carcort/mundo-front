@@ -1,9 +1,14 @@
 import { useState } from "react";
+import type { MouseEvent } from "react";
 
 import { deleteData } from "../../Fetch/deleteData";
+import type { Producto } from "../../types/domain";
 
+interface BadgeProductoProps {
+  data: Producto[];
+}
 
-const BadgeProducto = ({data}) => {
+const BadgeProducto = ({ data }: BadgeProductoProps) => {
 
   const [nproducto, setNProducto] = useState(true)
   const [cproducto, setCProducto] = useState(true)
@@ -15,8 +20,11 @@ const BadgeProducto = ({data}) => {
 
   const token = localStorage.getItem('access_token')
 
-  const handleClickBadgeProductos = async(e, id)=>{
-          if(e.target.id === 'eliminar'){
+  const handleClickBadgeProductos = async (
+    event: MouseEvent<HTMLImageElement>,
+    id: Producto["id_producto"],
+  ): Promise<void> => {
+          if(event.currentTarget.id === 'eliminar'){
           //console.log('eliminarrr');
               const ruta1 = 'productos'
               await deleteData({ruta1, token, id})
@@ -24,8 +32,8 @@ const BadgeProducto = ({data}) => {
               window.location.reload()
           
           }   
-      else if(e.target.id === 'actualizar'){
-          if(e.target.id === 'actualizar' && id===10){
+      else if(event.currentTarget.id === 'actualizar'){
+          if(event.currentTarget.id === 'actualizar' && id===10){
               setNProducto(!nproducto)
               setCProducto(!cproducto)
           }
@@ -34,14 +42,14 @@ const BadgeProducto = ({data}) => {
         console.log('aaaaaaaaaaa');
         
       }
-  }
+  };
 
 
-  const noProducto =(id)=>{
+  const noProducto = (): boolean => {
     return nproducto
   }
 
-  const caProducto =(id)=>{
+  const caProducto = (): boolean => {
     return cproducto
   }
   return (
@@ -69,15 +77,15 @@ const BadgeProducto = ({data}) => {
 
        <main className="w-full h-[90%] grid grid-rows-10">
           {data.map((el, index)=>{
-            return <section className="w-full h-full grid grid-cols-6 place-items-center text-gray-800">
+            return <section key={el.id_producto} className="w-full h-full grid grid-cols-6 place-items-center text-gray-800">
                 <div>
                   {index+1}
                 </div>
                 <button name="nombre_producto">
-                 {noProducto(el.id_producto) ?  el.nombre_producto: <input name="producto"  type="text" className="pl-3 w-full h-[99%] py-2 border border-gray-200" placeholder="Pc, Celular..." />}
+                 {noProducto() ?  el.nombre_producto: <input name="producto"  type="text" className="pl-3 w-full h-[99%] py-2 border border-gray-200" placeholder="Pc, Celular..." />}
                 </button>
                 <button name="cantidad_producto">
-                 {caProducto(el.id_producto) ?  el.cantidad_producto: <input name="producto"  type="text" className="pl-3 w-full h-[99%] py-2 border border-gray-200" placeholder="Pc, Celular..." />}
+                 {caProducto() ?  el.cantidad_producto: <input name="producto"  type="text" className="pl-3 w-full h-[99%] py-2 border border-gray-200" placeholder="Pc, Celular..." />}
                 </button>
                 <div>
                  264646

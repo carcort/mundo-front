@@ -15,8 +15,12 @@ const Private = () => {
   };
 
   // guardar el token en localstorage
-  localStorage.setItem("access_token", auth?.user?.access_token);
-  localStorage.setItem("id_token", auth?.user?.id_token);
+  if (auth.user?.access_token) {
+    localStorage.setItem("access_token", auth.user.access_token);
+  }
+  if (auth.user?.id_token) {
+    localStorage.setItem("id_token", auth.user.id_token);
+  }
 
 
   if (auth.isLoading) {
@@ -51,7 +55,7 @@ const Private = () => {
     
   }
 
-  
+  return null;
 }
 
 export default Private

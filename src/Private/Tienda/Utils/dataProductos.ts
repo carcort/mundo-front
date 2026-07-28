@@ -1,6 +1,12 @@
 
+interface ProductoEjemplo {
+  id: string;
+  producto: string;
+  cantidad: number;
+  dinero: number;
+}
 
-export const dataProductos = [
+export const dataProductos: ProductoEjemplo[] = [
    {
       id: '1',
       producto: 'MacBock',

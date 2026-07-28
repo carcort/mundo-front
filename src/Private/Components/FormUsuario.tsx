@@ -1,7 +1,14 @@
+import type { ChangeEventHandler, FormEventHandler } from "react";
 
+interface FormUsuarioProps {
+  handleChangeUsuario: ChangeEventHandler<HTMLInputElement>;
+  handleSubmitUsuario: FormEventHandler<HTMLFormElement>;
+}
 
-
-const FormUsuario= ({handleChangeUsuario, handleSubmitUsuario}) => {
+const FormUsuario = ({
+  handleChangeUsuario,
+  handleSubmitUsuario,
+}: FormUsuarioProps) => {
   return (
     <form onSubmit={handleSubmitUsuario} className="w-[60%] h-[80%] bg-white px-10" >
        <header className="w-full h-[15%] grid place-items-center">

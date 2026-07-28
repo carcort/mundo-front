@@ -1,10 +1,17 @@
-import { useState, useEffect, useEffectEvent } from "react";
+import { useState, useEffect } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+import type { AuthContextProps } from "react-oidc-context";
 import { useNavigate } from "react-router";
 import FormUsuario from "../Components/FormUsuario";
 import { postData } from "../../Fetch/postData";
 import { getData } from "../../Fetch/getData";
+import type { NuevoUsuario, Usuario } from "../../types/domain";
 
-const Home = ({auth}) => {
+interface HomeProps {
+  auth: AuthContextProps;
+}
+
+const Home = ({ auth }: HomeProps) => {
 
  console.log(auth);
  
@@ -16,7 +23,7 @@ const Home = ({auth}) => {
  const [cargo, setCargo] = useState('')
 
 
- const [usuarios, setUsuarios] = useState([])
+ const [usuarios, setUsuarios] = useState<Usuario[]>([])
 
  const navegar = useNavigate()
 
@@ -25,7 +32,7 @@ const Home = ({auth}) => {
    navegar('/private/tienda')
  }
 
- const handleChangeUsuario =(e)=>{
+ const handleChangeUsuario = (e: ChangeEvent<HTMLInputElement>): void => {
    //console.log(e.target.value);
    if(e.target.name === 'nombre'){
       setNombre(e.target.value)
@@ -42,12 +49,21 @@ const Home = ({auth}) => {
  }
 
 
- const handleSubmitUsuario = async(e)=>{
+ const handleSubmitUsuario = async (e: FormEvent<HTMLFormElement>,): Promise<void> => {
     e.preventDefault()
     
-    const id_usuario = auth.user.profile.sub
-    const email = auth.user.profile.email
-    const data = {id_usuario, nombre, apellido, cargo, email}
+    const id_usuario = auth.user?.profile.sub
+    const profileEmail = auth.user?.profile.email
+    if (!id_usuario || typeof profileEmail !== "string") {
+      throw new Error("El usuario autenticado no tiene identificador o email.");
+    }
+    const data: NuevoUsuario = {
+      id_usuario,
+      nombre,
+      apellido,
+      cargo,
+      email: profileEmail,
+    }
     const ruta1 = 'usuarios'
     await postData({data, ruta1, token})
     window.location.reload()
@@ -55,15 +71,15 @@ const Home = ({auth}) => {
  }
 
 
- const traerDatosUser = async()=>{
-     const ruta1 = 'usuarios' 
-     const resultados = await getData({ruta1, token})
-     setUsuarios(resultados)
- }
-
  useEffect(()=>{
-    traerDatosUser()
- }, [])
+   const traerDatosUser = async (): Promise<void> => {
+     const ruta1 = 'usuarios'
+     const resultados = await getData<Usuario[]>({ruta1, token})
+     setUsuarios(resultados)
+   }
+
+   void traerDatosUser()
+ }, [token])
 
  console.log(usuarios);
  
@@ -109,7 +125,7 @@ const Home = ({auth}) => {
 
           <div className="w-full h-[90%] ">
             {usuarios.map((el,index)=>{
-             return <section className="w-full grid grid-cols-7 h-[40px] items-center border border-gray-200 gap-y-1">
+             return <section key={el.id_usuario} className="w-full grid grid-cols-7 h-[40px] items-center border border-gray-200 gap-y-1">
               <div>
                {index + 1}
               </div>

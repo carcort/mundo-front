@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+import type { AuthContextProps } from "react-oidc-context";
 import {  useNavigate } from "react-router";
 import BadgeProducto from "../Components/BadgeProducto"
 import FormTienda from "../Components/FormTienda"
 import { postData } from "../../Fetch/postData";
 import { getData } from "../../Fetch/getData";
+import type { NuevoProducto, Producto } from "../../types/domain";
 
+interface TiendaProps {
+  auth: AuthContextProps;
+}
 
-
-const Tienda = ({auth}) => {
+const Tienda = ({ auth }: TiendaProps) => {
 
   const navegar = useNavigate()
 
@@ -23,9 +28,9 @@ const Tienda = ({auth}) => {
  const [nombre_producto, setNombre_Producto] = useState('')
  const [cantidad_producto, setNombre_Cantidad] = useState(0)
 
- const [productos, setProductos] = useState([])
+ const [productos, setProductos] = useState<Producto[]>([])
 
- const handleChangeTienda =(e)=>{
+ const handleChangeTienda = (e: ChangeEvent<HTMLInputElement>): void => {
    if(e.target.name === 'producto'){
      setNombre_Producto(e.target.value)
    }
@@ -38,10 +43,12 @@ const Tienda = ({auth}) => {
    }
  }
 
- const handleSubmitTienda = async(e)=>{
+ const handleSubmitTienda = async (
+   e: FormEvent<HTMLFormElement>,
+ ): Promise<void> => {
       e.preventDefault()
       console.log(nombre_producto, cantidad_producto);
-      const data = {nombre_producto, cantidad_producto}
+      const data: NuevoProducto = {nombre_producto, cantidad_producto}
       const ruta1 = 'productos'
       await postData({data, token, ruta1})
       alert('Producto guardado')
@@ -50,14 +57,15 @@ const Tienda = ({auth}) => {
  }
 
  // traer los productos
- const traerData = async()=>{
-        const ruta1 = 'productos'
-           const res = await getData({token, ruta1})
-           setProductos(res)
-       }
        useEffect(()=>{
-           traerData()
-       }, [])
+         const traerData = async (): Promise<void> => {
+           const ruta1 = 'productos'
+           const res = await getData<Producto[]>({token, ruta1})
+           setProductos(res)
+         }
+
+         void traerData()
+       }, [token])
      
        
        

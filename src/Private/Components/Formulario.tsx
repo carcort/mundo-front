@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+import type { ChangeEvent, FormEvent } from "react";
 import { getData } from "../../Fetch/getData";
 import { postData } from "../../Fetch/postData";
+import type { PaisCiudad } from "../../types/domain";
 
 const Formulario = () => {
 
@@ -15,9 +17,9 @@ const Formulario = () => {
  const [pais, setPais] = useState('')
  const [ciudad, setCiudad] = useState('')
 
- const [datos, setDatos] = useState([])
+ const [datos, setDatos] = useState<unknown[]>([])
 
-  const handleChangeInputForm =(e)=>{
+  const handleChangeInputForm = (e: ChangeEvent<HTMLInputElement>): void => {
      if(e.target.name === 'pais'){
         setPais(e.target.value)
      } 
@@ -35,13 +37,19 @@ const Formulario = () => {
 console.log('token:', token);
 
 
-  const handleSubmitForm = async(e)=>{
+  const handleSubmitForm = async (
+    e: FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
       e.preventDefault()
       console.log(pais, ciudad);
       const nombre = 'carviii'
       const apellido = 'cortes'
       const cargo = 'Administrador_Rrhh' 
-      const data = {pais, ciudad, nombre, apellido, cargo}
+      const data: PaisCiudad & {
+        nombre: string;
+        apellido: string;
+        cargo: string;
+      } = {pais, ciudad, nombre, apellido, cargo}
       const ruta1 = ''
       await postData({data, token, ruta1})
       alert('guardado')
@@ -49,13 +57,14 @@ console.log('token:', token);
   }
 
 
-  const traerData = async()=>{
-      const res = await getData({token})
-      setDatos(res)
-  }
   useEffect(()=>{
-      traerData()
-  }, [])
+    const traerData = async (): Promise<void> => {
+      const res = await getData<unknown[]>({token, ruta1: ""})
+      setDatos(res)
+    }
+
+    void traerData()
+  }, [token])
 
   console.log(datos);
 
