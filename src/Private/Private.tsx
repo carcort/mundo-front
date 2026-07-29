@@ -8,9 +8,9 @@ const Private = () => {
   const auth = useAuth();
 
   const signOutRedirect = () => {
-    const clientId = "2tdemhe8gk9vhd09h6nvh48jt2";
-    const logoutUri = "http://localhost:5173";
-    const cognitoDomain = "https://us-east-1eeybgfgah.auth.us-east-1.amazoncognito.com";
+    const clientId = import.meta.env.VITE_CLIENT_ID;
+    const logoutUri = import.meta.env.VITE_LOGOUT_URI;
+    const cognitoDomain = import.meta.env.VITE_COGNITO_DOMAIN;
     window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
   };
 

@@ -8,10 +8,10 @@ import { AuthProvider } from "react-oidc-context";
 
 
 const cognitoAuthConfig = {
-  authority: "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_eEybGfGaH",
-  client_id: "2tdemhe8gk9vhd09h6nvh48jt2",
-  redirect_uri: "http://localhost:5173/private",
-  response_type: "code",
+  authority: import.meta.env.VITE_COGNITO_AUTHORITY,
+  client_id: import.meta.env.VITE_COGNITO_CLIENT_ID,
+  redirect_uri: import.meta.env.VITE_COGNITO_REDIRECT_URI,
+  response_type: import.meta.env.VITE_COGNITO_RESPONSE_TIPE,
   scope: "phone openid email",
 };
 

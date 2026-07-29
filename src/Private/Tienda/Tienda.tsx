@@ -43,9 +43,7 @@ const Tienda = ({ auth }: TiendaProps) => {
    }
  }
 
- const handleSubmitTienda = async (
-   e: FormEvent<HTMLFormElement>,
- ): Promise<void> => {
+ const handleSubmitTienda = async (e: FormEvent<HTMLFormElement>,): Promise<void> => {
       e.preventDefault()
       console.log(nombre_producto, cantidad_producto);
       const data: NuevoProducto = {nombre_producto, cantidad_producto}
