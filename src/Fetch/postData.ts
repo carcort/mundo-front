@@ -11,7 +11,7 @@ export const postData = async <T>({
 }: PostDataParams<T>): Promise<Response> => {
   console.log(data);
 
-  const ruta = `http://localhost:3000/${ruta1}`;
+  const ruta = `http://98.84.147.121:3000/${ruta1}`;
   return fetch(ruta, {
     method: "POST",
     headers: {

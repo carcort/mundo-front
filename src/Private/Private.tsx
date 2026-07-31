@@ -1,18 +1,28 @@
 import NavbarPrivate from "../Components/NavbarPrivate"
 import { useAuth } from "react-oidc-context";
-import { Routes, Route } from "react-router";
+import { Routes, Route, useNavigate } from "react-router";
 import Tienda from "./Tienda/Tienda";
 import Home from "./Home/Home";
 
 const Private = () => {
   const auth = useAuth();
+  const navegar = useNavigate()
 
   const signOutRedirect = () => {
-    const clientId = import.meta.env.VITE_CLIENT_ID;
-    const logoutUri = import.meta.env.VITE_LOGOUT_URI;
-    const cognitoDomain = import.meta.env.VITE_COGNITO_DOMAIN;
+    const clientId = import.meta.env.VITE_CLIENT_ID_DES;
+    const logoutUri = import.meta.env.VITE_LOGOUT_URI_DES;
+    const cognitoDomain = import.meta.env.VITE_COGNITO_DOMAIN_DES;
     window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
+    localStorage.clear()
   };
+
+
+  // const signOutRedirect = () => {
+  //   const clientId = "2tdemhe8gk9vhd09h6nvh48jt2";
+  //   const logoutUri = "https://roudev.com";
+  //   const cognitoDomain = "https://us-east-1eeybgfgah.auth.us-east-1.amazoncognito.com";
+  //   window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
+  // };
 
   // guardar el token en localstorage
   if (auth.user?.access_token) {
@@ -24,14 +34,14 @@ const Private = () => {
 
 
   if (auth.isLoading) {
-    return <div>Loading...</div>;
+    return <div>Cargando...</div>;
   }
 
   if (auth.error) {
-    return <div>Error en la autenticacion... {auth.error.message}</div>;
+    return <div>Error en la authenticacion... {auth.error.message}</div>;
   }
 
-  if (auth.isAuthenticated) {
+  if (auth.isAuthenticated)  {
     return (
     <div className="w-screen h-screen flex justify-center">
         <div className="w-[70%] h-full bg-black-500  font-semibold">
@@ -53,6 +63,9 @@ const Private = () => {
     </div>
   )
     
+  }
+  else {
+      navegar('/')
   }
 
   return null;

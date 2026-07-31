@@ -11,7 +11,7 @@ const Public = () => {
           </header>
           <main className="w-full h-[95%] grid place-items-center bg-gray-100">
             <div>
-              PUBLICO
+              PUBLICO 3
             </div>
           </main>
 

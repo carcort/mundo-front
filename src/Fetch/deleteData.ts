@@ -13,7 +13,7 @@ export const deleteData = async ({
   console.log("token", token);
   console.log("id", id);
 
-  const ruta = `http://localhost:3000/${ruta1}/${id}`;
+  const ruta = `http://98.84.147.121:3000/${ruta1}/${id}`;
   return fetch(ruta, {
     method: "DELETE",
     headers: {
